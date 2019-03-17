@@ -13,4 +13,7 @@ public class Content {
     private int id;
     private String name;
     private String category;
+
+    public Content(int id, String name) {
+    }
 }

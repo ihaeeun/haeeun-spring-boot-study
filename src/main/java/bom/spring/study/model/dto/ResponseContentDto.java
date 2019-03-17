@@ -13,4 +13,9 @@ public class ResponseContentDto {
     private int id;
     private String name;
     private String category;
+
+    public ResponseContentDto(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
 }

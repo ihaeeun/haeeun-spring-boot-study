@@ -27,7 +27,14 @@ public class ContentsRepository {
         return content;
     }
 
-    public int insertContent(RequestContentDto requestContentDto){
+    public List<Content> getCategoryContents(String category){
+        String selectQuery = "SELECT id, name FROM contents WHERE category = ?";
+        List<Content> contents = template.query(selectQuery, new Object[]{category}, (rs, rowNum) ->
+                new Content(rs.getInt("id"), rs.getString("name")));
+        return contents;
+    }
+
+    public int addContent(RequestContentDto requestContentDto){
         String insertQuery = "INSERT INTO contents VALUES (?, ?, ?)";
         return template.update(insertQuery, requestContentDto.getId(), requestContentDto.getName(), requestContentDto.getCategory());
     }

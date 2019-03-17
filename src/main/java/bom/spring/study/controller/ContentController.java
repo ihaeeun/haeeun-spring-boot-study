@@ -27,6 +27,11 @@ public class ContentController {
         return ResponseEntity.status(HttpStatus.OK).body(contentService.getContent(contentId));
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ResponseContentDto>> getCategoryContent(@PathVariable("category") String category){
+        return ResponseEntity.status(HttpStatus.OK).body(contentService.getCategoryContent(category));
+    }
+
     @PostMapping("/content")
     public ResponseEntity addContent(@RequestBody RequestContentDto requestContentDto){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

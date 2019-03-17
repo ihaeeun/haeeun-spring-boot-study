@@ -34,8 +34,20 @@ public class ContentService {
         return responseContentDto;
     }
 
+    public List<ResponseContentDto> getCategoryContent(String category) {
+        List<ResponseContentDto> responseContentDtos = new ArrayList<>();
+        List<Content> contents = contentsRepository.getCategoryContents(category);
+
+        for(Content content : contents) {
+            ResponseContentDto responseContentDto = new ResponseContentDto(content.getId(), content.getName());
+            responseContentDtos.add(responseContentDto);
+        }
+
+        return responseContentDtos;
+    }
+
     public void addContent(RequestContentDto requestContentDto){
-        contentsRepository.insertContent(requestContentDto);
+        contentsRepository.addContent(requestContentDto);
     }
 
     public void deleteContent(int contentId) {
