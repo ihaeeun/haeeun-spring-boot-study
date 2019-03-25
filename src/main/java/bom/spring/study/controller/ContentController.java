@@ -2,6 +2,7 @@ package bom.spring.study.controller;
 
 import bom.spring.study.model.dto.RequestContentDto;
 import bom.spring.study.model.dto.ResponseContentDto;
+import bom.spring.study.model.dto.ResponseContentListDto;
 import bom.spring.study.service.ContentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +19,23 @@ public class ContentController {
     }
 
     @GetMapping("/contents")
-    public ResponseEntity<List<ResponseContentDto>> getAllContents(){
+    public ResponseEntity<List<ResponseContentListDto>> getAllContents(){
         return ResponseEntity.status(HttpStatus.OK).body(contentService.getAllContents());
     }
 
-    @GetMapping("/content/{contentId}")
-    public ResponseEntity<ResponseContentDto> getContent(@PathVariable("contentId") int contentId){
+    @GetMapping("/contents/{content-id}")
+    public ResponseEntity<ResponseContentDto> getContent(@PathVariable("content-id") int contentId){
         return ResponseEntity.status(HttpStatus.OK).body(contentService.getContent(contentId));
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<ResponseContentDto>> getCategoryContent(@PathVariable("category") String category){
+    @GetMapping("/contents/categories/{category}")
+    public ResponseEntity<List<ResponseContentListDto>> getCategoryContent(@PathVariable("category") String category){
         return ResponseEntity.status(HttpStatus.OK).body(contentService.getCategoryContent(category));
+    }
+
+    @GetMapping("/contents/genres/{genre-id}")
+    public ResponseEntity<List<ResponseContentListDto>> getGenreContent(@PathVariable("genre-id") int genreId){
+        return ResponseEntity.status(HttpStatus.OK).body(contentService.getGenreContent(genreId));
     }
 
     @PostMapping("/content")
@@ -37,8 +43,8 @@ public class ContentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/content/{contentId}")
-    public ResponseEntity deleteContent(@PathVariable("contentId") int contentId){
+    @DeleteMapping("/contents/{content-id}")
+    public ResponseEntity deleteContent(@PathVariable("content-id") int contentId){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

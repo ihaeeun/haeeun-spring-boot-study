@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseContentDto {
+public class ResponseContentListDto {
     private int id;
     private String name;
-    private String genre;
 }

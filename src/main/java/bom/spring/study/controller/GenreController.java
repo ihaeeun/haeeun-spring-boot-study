@@ -22,13 +22,13 @@ public class GenreController {
         return ResponseEntity.status(HttpStatus.OK).body(genreService.getGenres());
     }
 
-    @PostMapping("/genres")
+    @PostMapping("/genre")
     public ResponseEntity addGenres(@RequestBody RequestGenreDto requestGenreDto){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/genre/{genreId}")
-    public ResponseEntity deleteGenre(@PathVariable("genreId") int genreId){
+    @DeleteMapping("/genres/{genre-id}")
+    public ResponseEntity deleteGenre(@PathVariable("genre-id") int genreId){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

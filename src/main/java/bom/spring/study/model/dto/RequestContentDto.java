@@ -13,4 +13,5 @@ public class RequestContentDto {
     private int id;
     private String name;
     private String category;
+    private int genreId;
 }
