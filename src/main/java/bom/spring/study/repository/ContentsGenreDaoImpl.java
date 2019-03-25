@@ -1,6 +1,8 @@
 package bom.spring.study.repository;
 
 import bom.spring.study.model.dto.RequestContentDto;
+import bom.spring.study.model.dto.RequestGenreDto;
+import bom.spring.study.model.vo.Content;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +15,9 @@ public class ContentsGenreDaoImpl implements ContentsGenreDao {
     }
 
     @Override
-    public int addContentGenre(RequestContentDto requestContentDto) {
+    public int addContentGenre(Content contentId, int genreId) {
         String insertQuery = "INSERT INTO content_genre VALUES (?, ?)";
-        return template.update(insertQuery, requestContentDto.getId(), requestContentDto.getGenreId());
+        return template.update(insertQuery, contentId, genreId);
     }
 
     @Override

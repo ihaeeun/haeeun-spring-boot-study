@@ -76,15 +76,18 @@ public class ContentServiceImpl implements ContentService{
         return responseContentListDtos;
     }
 
-//    TODO Transactional
     @Override
+    @Transactional
     public void addContent(RequestContentDto requestContentDto){
         contentDao.addContent(requestContentDto);
-//        contentGenreDao
+        Content contentId = contentDao.getContentId(requestContentDto.getName());
+        contentsGenreDao.addContentGenre(contentId, requestContentDto.getGenreId());
     }
 
     @Override
+    @Transactional
     public void deleteContent(int contentId) {
         contentDao.deleteContent(contentId);
+        contentsGenreDao.deleteContentGenre(contentId);
     }
 }
