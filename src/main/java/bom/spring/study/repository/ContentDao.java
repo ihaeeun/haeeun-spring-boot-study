@@ -8,6 +8,7 @@ import java.util.List;
 public interface ContentDao {
     List<Content> getAllContents();
     Content getContent(int contentId);
+    Content getContentId(String contentName);
     List<Content> getCategoryContents(String category);
     List<Content> getGenreContents(int genreId);
     int addContent(RequestContentDto requestContentDto);

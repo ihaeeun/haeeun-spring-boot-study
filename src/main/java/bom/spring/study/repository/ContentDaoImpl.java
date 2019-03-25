@@ -32,6 +32,14 @@ public class ContentDaoImpl implements ContentDao {
     }
 
     @Override
+    public Content getContentId(String contentName) {
+        String selectQuery = "SELECT id FROM contents WHERE name = ?";
+        Content content = template.queryForObject(selectQuery, new Object[]{contentName}, (rs, rowNum) ->
+                new Content(rs.getInt("id")));
+        return content;
+    }
+
+    @Override
     public List<Content> getCategoryContents(String category){
         String selectQuery = "SELECT id, name FROM contents WHERE category = ?";
         List<Content> contents = template.query(selectQuery, new Object[]{category}, (rs, rowNum) ->
