@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ContentServiceImpl implements ContentService{
@@ -26,54 +27,32 @@ public class ContentServiceImpl implements ContentService{
         this.contentsGenreDao = contentsGenreDao;
     }
 
-    private List<ResponseContentListDto> convert(List<Content> contents) {
-        List<ResponseContentListDto> responseContentListDtos = new ArrayList<>();
-
-        for(Content content : contents) {
-            ResponseContentListDto responseContentListDto = new ResponseContentListDto(content.getId(), content.getName());
-            responseContentListDtos.add(responseContentListDto);
-        }
-        return responseContentListDtos;
-    }
-
     @Override
     public List<ResponseContentListDto> getAllContents() {
-        List<ResponseContentListDto> responseContentListDtos;
         List<Content> contents = contentDao.getAllContents();
-
-        responseContentListDtos = convert(contents);
-
-        return responseContentListDtos;
+        return contents.stream().map(this::convert).collect(Collectors.toList());
     }
 
 //    TODO exception (genre가 없을 때 null 반환 => nullPointException)
     @Override
     public ResponseContentDto getContent(int contentId) {
         Content content = contentDao.getContent(contentId);
-        Genre genre = (Genre) genreDao.getGenreName(contentId);
-        ResponseContentDto responseContentDto = new ResponseContentDto(content.getId(), content.getName(), genre.getGenre());
+        List<Genre> genres = genreDao.getGenreName(contentId);
+        ResponseContentDto responseContentDto = new ResponseContentDto(content.getId(), content.getName(), genres);
 
         return responseContentDto;
     }
 
     @Override
     public List<ResponseContentListDto> getCategoryContent(String category) {
-        List<ResponseContentListDto> responseContentListDtos;
         List<Content> contents = contentDao.getCategoryContents(category);
-
-        responseContentListDtos = convert(contents);
-
-        return responseContentListDtos;
+        return contents.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
     public List<ResponseContentListDto> getGenreContent(int genreId) {
-        List<ResponseContentListDto> responseContentListDtos;
         List<Content> contents = contentDao.getGenreContents(genreId);
-
-        responseContentListDtos = convert(contents);
-
-        return responseContentListDtos;
+        return contents.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
@@ -89,5 +68,12 @@ public class ContentServiceImpl implements ContentService{
     public void deleteContent(int contentId) {
         contentDao.deleteContent(contentId);
         contentsGenreDao.deleteContentGenre(contentId);
+    }
+
+    private ResponseContentListDto convert(Content content) {
+        ResponseContentListDto responseContentListDto = new ResponseContentListDto();
+        responseContentListDto.setId(content.getId());
+        responseContentListDto.setName(content.getName());
+        return responseContentListDto;
     }
 }

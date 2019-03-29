@@ -2,7 +2,6 @@ package bom.spring.study.repository;
 
 import bom.spring.study.model.dto.RequestGenreDto;
 import bom.spring.study.model.vo.Genre;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -27,15 +26,15 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public List<Genre> getGenreName(int contentId) {
         String selectQuery = "SELECT cg.genreId, g.genre FROM contents_genre AS cg JOIN genre AS g ON cg.genreId = g.id WHERE cg.contentId = ?";
-        List<Genre> genreName = template.query(selectQuery, new Object[]{contentId}, (rs, rowNum) ->
+        List<Genre> genreNames = template.query(selectQuery, new Object[]{contentId}, (rs, rowNum) ->
                 new Genre(rs.getString("genre")));
-        return genreName;
+        return genreNames;
     }
 
     @Override
     public int addGenre(RequestGenreDto requestGenreDto) {
-        String insertQuery = "INSERT INTO genre VALUES (?, ?)";
-        return template.update(insertQuery, new Object[]{requestGenreDto.getGenreId(), requestGenreDto.getGenre()}, new BeanPropertyRowMapper<>(Genre.class));
+        String insertQuery = "INSERT INTO genre VALUES (?)";
+        return template.update(insertQuery, new Object[]{requestGenreDto.getGenre()});
     }
 
     @Override

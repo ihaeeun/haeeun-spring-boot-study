@@ -1,15 +1,13 @@
 package bom.spring.study.service;
 
 import bom.spring.study.model.dto.RequestGenreDto;
-import bom.spring.study.model.dto.ResponseContentListDto;
 import bom.spring.study.model.dto.ResponseGenreDto;
-import bom.spring.study.model.vo.Content;
 import bom.spring.study.model.vo.Genre;
 import bom.spring.study.repository.GenreDaoImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -19,35 +17,16 @@ public class GenreServiceImpl implements GenreService {
         this.genreDaoImpl = genreDaoImpl;
     }
 
-    private List<ResponseGenreDto> convert(List<Genre> genres) {
-        List<ResponseGenreDto> responseGenreDtos = new ArrayList<>();
-
-        for(Genre genre : genres) {
-            ResponseGenreDto responseGenreDto = new ResponseGenreDto(genre.getGenreId(), genre.getGenre());
-            responseGenreDtos.add(responseGenreDto);
-        }
-
-        return responseGenreDtos;
-    }
-
     @Override
     public List<ResponseGenreDto> getGenres() {
-        List<ResponseGenreDto> responseGenreDtos;
         List<Genre> genres = genreDaoImpl.getGenres();
-
-        responseGenreDtos = convert(genres);
-
-        return responseGenreDtos;
+        return genres.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
     public List<ResponseGenreDto> getGenreName(int contentId) {
-        List<ResponseGenreDto> responseGenreDtos;
         List<Genre> genres = genreDaoImpl.getGenreName(contentId);
-
-        responseGenreDtos = convert(genres);
-
-        return responseGenreDtos;
+        return genres.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
@@ -59,4 +38,13 @@ public class GenreServiceImpl implements GenreService {
     public void deleteGenre(int genreId){
         genreDaoImpl.deleteGenre(genreId);
     }
+
+
+    private ResponseGenreDto convert(Genre genre) {
+        ResponseGenreDto responseGenreDto = new ResponseGenreDto();
+        responseGenreDto.setGenreId(genre.getGenreId());
+        responseGenreDto.setGenre(genre.getGenre());
+        return responseGenreDto;
+    }
+
 }

@@ -5,6 +5,7 @@ import bom.spring.study.model.dto.ResponseContentDto;
 import bom.spring.study.model.dto.ResponseContentListDto;
 import bom.spring.study.service.ContentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,13 +39,15 @@ public class ContentController {
         return ResponseEntity.status(HttpStatus.OK).body(contentService.getGenreContent(genreId));
     }
 
-    @PostMapping("/content")
+    @PostMapping(value = "/content")
     public ResponseEntity addContent(@RequestBody RequestContentDto requestContentDto){
+        contentService.addContent(requestContentDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/contents/{content-id}")
     public ResponseEntity deleteContent(@PathVariable("content-id") int contentId){
+        contentService.deleteContent(contentId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
