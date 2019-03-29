@@ -2,7 +2,7 @@ package bom.spring.study.service;
 
 import bom.spring.study.model.dto.RequestContentDto;
 import bom.spring.study.model.dto.ResponseContentDto;
-import bom.spring.study.model.dto.ResponseContentListDto;
+import bom.spring.study.model.dto.ResponseAllContentsDto;
 import bom.spring.study.model.vo.Content;
 import bom.spring.study.model.vo.Genre;
 import bom.spring.study.repository.ContentDao;
@@ -11,7 +11,6 @@ import bom.spring.study.repository.GenreDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class ContentServiceImpl implements ContentService{
     }
 
     @Override
-    public List<ResponseContentListDto> getAllContents() {
+    public List<ResponseAllContentsDto> getAllContents() {
         List<Content> contents = contentDao.getAllContents();
         return contents.stream().map(this::convert).collect(Collectors.toList());
     }
@@ -44,13 +43,13 @@ public class ContentServiceImpl implements ContentService{
     }
 
     @Override
-    public List<ResponseContentListDto> getCategoryContent(String category) {
+    public List<ResponseAllContentsDto> getCategoryContent(String category) {
         List<Content> contents = contentDao.getCategoryContents(category);
         return contents.stream().map(this::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<ResponseContentListDto> getGenreContent(int genreId) {
+    public List<ResponseAllContentsDto> getGenreContent(int genreId) {
         List<Content> contents = contentDao.getGenreContents(genreId);
         return contents.stream().map(this::convert).collect(Collectors.toList());
     }
@@ -59,7 +58,7 @@ public class ContentServiceImpl implements ContentService{
     @Transactional
     public void addContent(RequestContentDto requestContentDto){
         contentDao.addContent(requestContentDto);
-        Content contentId = contentDao.getContentId(requestContentDto.getName());
+        int contentId = contentDao.getContentId(requestContentDto.getName());
         contentsGenreDao.addContentGenre(contentId, requestContentDto.getGenreId());
     }
 
@@ -70,10 +69,10 @@ public class ContentServiceImpl implements ContentService{
         contentsGenreDao.deleteContentGenre(contentId);
     }
 
-    private ResponseContentListDto convert(Content content) {
-        ResponseContentListDto responseContentListDto = new ResponseContentListDto();
-        responseContentListDto.setId(content.getId());
-        responseContentListDto.setName(content.getName());
-        return responseContentListDto;
+    private ResponseAllContentsDto convert(Content content) {
+        ResponseAllContentsDto responseAllContentsDto = new ResponseAllContentsDto();
+        responseAllContentsDto.setId(content.getId());
+        responseAllContentsDto.setName(content.getName());
+        return responseAllContentsDto;
     }
 }

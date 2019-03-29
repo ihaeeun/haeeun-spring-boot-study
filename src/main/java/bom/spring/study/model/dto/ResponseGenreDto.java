@@ -12,8 +12,4 @@ import lombok.Setter;
 public class ResponseGenreDto {
     private int genreId;
     private String genre;
-
-//    public ResponseGenreDto(String genre) {
-//        this.genre = genre;
-//    }
 }

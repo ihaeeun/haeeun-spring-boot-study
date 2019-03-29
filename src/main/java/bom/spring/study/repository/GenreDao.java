@@ -8,6 +8,6 @@ import java.util.List;
 public interface GenreDao {
     List<Genre> getGenres();
     List<Genre> getGenreName(int genreId);
-    int addGenre(RequestGenreDto requestGenreDto);
-    int deleteGenre(int genreId);
+    void addGenre(RequestGenreDto requestGenreDto);
+    void deleteGenre(int genreId);
 }

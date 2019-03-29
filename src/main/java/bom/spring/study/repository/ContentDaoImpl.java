@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public class ContentDaoImpl implements ContentDao {
 
-    private final JdbcTemplate template;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ContentDaoImpl(JdbcTemplate template) {
-        this.template = template;
+    public ContentDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Content> getAllContents(){
-        List<Content> contents = template.query("SELECT * FROM contents", (rs, rowNum) ->
+        List<Content> contents = jdbcTemplate.query("SELECT * FROM contents", (rs, rowNum) ->
             new Content(rs.getInt("id"), rs.getString("name"), rs.getString("category")));
         return contents;
     }
@@ -27,22 +27,30 @@ public class ContentDaoImpl implements ContentDao {
     @Override
     public Content getContent(int contentId){
         String selectQuery = "SELECT id, name FROM contents WHERE id = ?";
-        Content content = template.queryForObject(selectQuery, new Object[]{contentId}, new BeanPropertyRowMapper<>(Content.class));
+        Content content = jdbcTemplate.queryForObject(selectQuery, new Object[]{contentId}, new BeanPropertyRowMapper<>(Content.class));
         return content;
     }
 
+//    @Override
+//    public Content getContentId(String contentName) {
+//        String selectQuery = "SELECT id FROM contents WHERE name = ?";
+//        Content content = jdbcTemplate.queryForObject(selectQuery, new Object[]{contentName}, (rs, rowNum) ->
+//                new Content(rs.getInt("id")));
+//        return content;
+//    }
+
     @Override
-    public Content getContentId(String contentName) {
+    public int getContentId(String contentName) {
         String selectQuery = "SELECT id FROM contents WHERE name = ?";
-        Content content = template.queryForObject(selectQuery, new Object[]{contentName}, (rs, rowNum) ->
+        Content content = jdbcTemplate.queryForObject(selectQuery, new Object[]{contentName}, (rs, rowNum) ->
                 new Content(rs.getInt("id")));
-        return content;
+        return content.getId();
     }
 
     @Override
     public List<Content> getCategoryContents(String category){
         String selectQuery = "SELECT id, name FROM contents WHERE category = ?";
-        List<Content> contents = template.query(selectQuery, new Object[]{category}, (rs, rowNum) ->
+        List<Content> contents = jdbcTemplate.query(selectQuery, new Object[]{category}, (rs, rowNum) ->
                 new Content(rs.getInt("id"), rs.getString("name")));
         return contents;
     }
@@ -50,20 +58,20 @@ public class ContentDaoImpl implements ContentDao {
     @Override
     public List<Content> getGenreContents(int genreId){
         String selectQuery = "SELECT * FROM contents AS c JOIN contents_genre AS cg ON cd.id = ?";
-        List<Content> contents = template.query(selectQuery, new Object[]{genreId}, (rs, rowNum) ->
+        List<Content> contents = jdbcTemplate.query(selectQuery, new Object[]{genreId}, (rs, rowNum) ->
                 new Content(rs.getInt("id"), rs.getString("name")));
         return contents;
     }
 
     @Override
-    public int addContent(RequestContentDto requestContentDto){
-        String insertQuery = "INSERT INTO contents VALUES (?, ?, ?)";
-        return template.update(insertQuery, requestContentDto.getId(), requestContentDto.getName(), requestContentDto.getCategory());
+    public void addContent(RequestContentDto requestContentDto){
+        String insertQuery = "INSERT INTO contents (name, category) VALUES (?, ?)";
+        jdbcTemplate.update(insertQuery, requestContentDto.getName(), requestContentDto.getCategory());
     }
 
     @Override
-    public int deleteContent(int contentId){
+    public void deleteContent(int contentId){
         String deleteQuery = "DELETE FROM contents WEHRE id = ?";
-        return template.update(deleteQuery, contentId);
+        jdbcTemplate.update(deleteQuery, contentId);
     }
 }

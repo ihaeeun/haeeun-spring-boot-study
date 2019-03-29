@@ -10,8 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestGenreDto {
-
-//    private int genreId;
     private String genre;
-
 }
