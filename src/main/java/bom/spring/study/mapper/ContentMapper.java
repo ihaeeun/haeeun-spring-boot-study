@@ -10,7 +10,8 @@ public class ContentMapper implements RowMapper<Content> {
     public Content mapRow(ResultSet rs, int rowNum) throws SQLException {
         Content content = new Content(rs.getInt("id"),
                 rs.getString("name"),
-                rs.getString("category"));
+                rs.getString("category"),
+                rs.getInt("year"));
 
         return content;
     }

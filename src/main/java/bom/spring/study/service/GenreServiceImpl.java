@@ -1,5 +1,6 @@
 package bom.spring.study.service;
 
+import bom.spring.study.exception.NotFoundContent;
 import bom.spring.study.model.dto.RequestGenreDto;
 import bom.spring.study.model.dto.ResponseGenreDto;
 import bom.spring.study.model.vo.Genre;
@@ -7,6 +8,7 @@ import bom.spring.study.repository.GenreDaoImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,19 +21,28 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<ResponseGenreDto> getGenres() {
-        List<Genre> genres = genreDaoImpl.getGenres();
+        List<Genre> genres = Optional.ofNullable(genreDaoImpl.getGenres()).orElseThrow(NotFoundContent::new);
         return genres.stream().map(this::convert).collect(Collectors.toList());
+
     }
 
     @Override
     public List<ResponseGenreDto> getGenreName(int contentId) {
-        List<Genre> genres = genreDaoImpl.getGenreName(contentId);
-        return genres.stream().map(this::convert).collect(Collectors.toList());
+        List<Genre> genres = Optional
+                .ofNullable(genreDaoImpl.getGenreName(contentId))
+                .orElseThrow(NotFoundContent::new);
+
+        return genres
+                .stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void addGenre(RequestGenreDto requestGenreDto){
-        genreDaoImpl.addGenre(requestGenreDto);
+        Genre genre = new Genre();
+        genre.setGenre(requestGenreDto.getGenre());
+        genreDaoImpl.addGenre(genre);
     }
 
     @Override

@@ -8,10 +8,9 @@ import java.util.List;
 public interface ContentDao {
     List<Content> getAllContents();
     Content getContent(int contentId);
-//    Content getContentId(String contentName);
-    int getContentId(String contentName);
-    List<Content> getCategoryContents(String category);
-    List<Content> getGenreContents(int genreId);
-    void addContent(RequestContentDto requestContentDto);
-    void deleteContent(int contentId);
+    int getContentId(String contentName, int year);
+    List<Content> getContentsByCategory(String category);
+    List<Content> getContentsByGenre(int genreId);
+    int addContent(Content content);
+    int deleteContent(int contentId);
 }

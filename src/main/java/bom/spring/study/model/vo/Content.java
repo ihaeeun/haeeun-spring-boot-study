@@ -13,13 +13,5 @@ public class Content {
     private int id;
     private String name;
     private String category;
-
-    public Content(int id) {
-        this.id = id;
-    }
-
-    public Content(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private int year;
 }

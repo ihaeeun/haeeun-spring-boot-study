@@ -13,8 +13,4 @@ import lombok.Setter;
 public class Genre {
     private int genreId;
     private String genre;
-
-    public Genre(String genre){
-        this.genre = genre;
-    }
 }

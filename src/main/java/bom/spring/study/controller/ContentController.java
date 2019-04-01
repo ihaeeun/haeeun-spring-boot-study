@@ -31,12 +31,12 @@ public class ContentController {
 
     @GetMapping("/categories/{category}")
     public ResponseEntity<List<ResponseAllContentsDto>> getCategoryContent(@PathVariable("category") String category){
-        return ResponseEntity.status(HttpStatus.OK).body(contentService.getCategoryContent(category));
+        return ResponseEntity.status(HttpStatus.OK).body(contentService.getContentsByCategory(category));
     }
 
     @GetMapping("/genres/{genre-id}")
     public ResponseEntity<List<ResponseAllContentsDto>> getGenreContent(@PathVariable("genre-id") int genreId){
-        return ResponseEntity.status(HttpStatus.OK).body(contentService.getGenreContent(genreId));
+        return ResponseEntity.status(HttpStatus.OK).body(contentService.getContentsByGenre(genreId));
     }
 
     @PostMapping(value = "/content")

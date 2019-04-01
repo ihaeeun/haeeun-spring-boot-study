@@ -10,8 +10,8 @@ import java.util.List;
 public interface ContentService {
     List<ResponseAllContentsDto> getAllContents();
     ResponseContentDto getContent(int contentId);
-    List<ResponseAllContentsDto> getCategoryContent(String category);
-    List<ResponseAllContentsDto> getGenreContent(int genreId);
+    List<ResponseAllContentsDto> getContentsByCategory(String category);
+    List<ResponseAllContentsDto> getContentsByGenre(int genreId);
     void addContent(RequestContentDto requestContentDto);
     void deleteContent(int contentId);
 //    TODO : update
